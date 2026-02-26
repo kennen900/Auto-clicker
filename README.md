@@ -6,7 +6,9 @@ Prosty auto-kliker napisany w Pythonie.
 - Automatyczne klikanie myszy
 - Automatyczne klikanie wybranego klawisza klawiatury
 - Start klawiszem [
-- Stop klawiszem ] - trzeba przytrzymać 
+- Stop klawiszem ]
+- Przerwa klawiszem ;
+- Kontynuuj klawiszem 1
 
 ### Uruchamianie
 pip install pyautogui
