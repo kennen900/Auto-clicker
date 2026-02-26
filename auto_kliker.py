@@ -1,36 +1,56 @@
 import pyautogui
 import time
 import keyboard
+import threading
 
-kliker = float(input("Podaj z jak predkoscia ma klikac "))
-wlacznik = input("[ - by odpalic, ] - by wylaczyc, ; - przerwa, 1 - kontynuluj, lub inny przycisk zostaw puste ")
+kliker = float(input("Podaj z jaką prędkością ma klikać: "))
 
-while wlacznik == '[':
-    if keyboard.is_pressed(']'):
-        print("koniec")
-        break
-    elif keyboard.is_pressed(";"):
-        while True:
-            if keyboard.is_pressed('1'):
-                break
-            if keyboard.is_pressed(']'):
-                print("koniec")
-                break
-        
-    pyautogui.click()
-    pyautogui.PAUSE = kliker
+running = False
+paused = False
+key = False
+wybur = ''
 
-if wlacznik == '':
-    przycisk = input("Podaj przycisk ")
+def auto_click():
+    global running, paused
     while True:
-        if keyboard.is_pressed(']'):
-            print("koniec")
-            wlacznik == ']'
-            break
-        pyautogui.press(przycisk)
-        pyautogui.PAUSE = kliker
+        if key:
+            pyautogui.press(wybur)
+            time.sleep(kliker)
+        if running and not paused:
+            pyautogui.click()
+            time.sleep(kliker)
+        else:
+            time.sleep(0.01)
 
 
-    
 
-    
+thread = threading.Thread(target=auto_click)
+thread.daemon = True
+thread.start()
+
+print("[ - start | ] - stop | ; - pauza | 1 - kontynuuj | . - dowolny wybrany klawisz")
+
+while True:
+    if keyboard.is_pressed('['):
+        running = True
+        print("Start")
+        time.sleep(0.2)
+
+    elif keyboard.is_pressed(']'):
+        running = False
+        print("Stop")
+        break
+
+    elif keyboard.is_pressed(';'):
+        paused = True
+        print("Pauza")
+        time.sleep(0.2)
+
+    elif keyboard.is_pressed('1'):
+        paused = False
+        print("Kontynuacja")
+        time.sleep(0.2)
+
+    elif keyboard.is_pressed('.'):
+        key = True
+        wybur = input("Podaj klawisz: ")
